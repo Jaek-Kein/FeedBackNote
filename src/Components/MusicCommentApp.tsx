@@ -180,7 +180,7 @@ export default function MusicCommentApp() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "music_comments.json";
+            a.download = "music_comments.FeedbackNote";
             a.click();
             URL.revokeObjectURL(url);
         };
@@ -222,7 +222,7 @@ export default function MusicCommentApp() {
                             불러오기
                             <input
                                 type="file"
-                                accept=".json"
+                                accept=".FeedbackNote"
                                 onChange={handleLoad}
                                 style={{ display: "none" }}
                             />
