@@ -62,11 +62,11 @@ const LoadLabel = styled.label`
     align-items: center;
     padding: 0rem 1rem;
     height: 40px;
-    background-color: #007bff; /* 파란색 버튼 배경 */
-    color: white; /* 흰색 글자 */
-    border-radius: 0.375rem; /* 둥근 모서리 */
-    cursor: pointer; /* 클릭 시 커서 */
-    user-select: none; /* 텍스트 드래그 방지 */
+    background-color: #007bff;
+    color: white; 
+    border-radius: 0.375rem;
+    cursor: pointer; 
+    user-select: none;
     font-weight: 600;
     font-size: 1rem;
     text-align: center;

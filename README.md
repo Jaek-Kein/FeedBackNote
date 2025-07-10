@@ -1,69 +1,22 @@
-# React + TypeScript + Vite
+# 쉽게 공유해보는 믹싱 피드백 노트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+저는 제가 피드백 받는것도 좋아하고 누군가 피드백을 요청하면 즐겁게 듣고 피드백을 하는 편인데요.
+매번 어디서 어디, 어떤거 같은 부정확한 단어로 표현하는게 불편하다 느껴졌습니다.
+그래서 타임라인과 연동되는 피드백 노트를 만들었습니다.
 
-Currently, two official plugins are available:
+## 기능 설명
+1. 믹스셋을 업로드 합니다.
+2. 믹스셋을 들으며 [코멘트 추가] 버튼으로 코멘트를 추가합니다. 타임라인은 자동으로 추가됩니다!
+3. 다 들었다면 저장 후 파일을 피드백을 주고 싶은 사람에게 넘겨줍니다!
+4. 파일을 받은사람은 사이트에서 파일을 불러와 기록된 시간을 눌러보며 어느위치에 어느 코멘트가 달렸는지 확인합니다!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 어떻게 기능하는가?
+음악은 Base64로 인코딩 Blob 으로 Json 에 저장. 나머지 데이터도 Json 으로 저장해서 Json 파일로 던져버립니다!
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 추후 발전 목표
+- 코멘트란 마크다운 지원 (당장도 적용 가능함)
+- 파일 제목과 아티스트명 불러오기
+- 플레이어 커스텀
+- 파일명 Json -> 커스텀 확장자
+- UI 개선
+- 아키텍처 개선 (그냥 장난감 만든다는 느낌으로 다 때려박아서..)
