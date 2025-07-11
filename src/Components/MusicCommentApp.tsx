@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import MusicPlayer from "./musicPlayer";
+import MusicPlayer from "./MusicPlayer";
 import { formatTime } from "./Common";
 
 interface Comment {
