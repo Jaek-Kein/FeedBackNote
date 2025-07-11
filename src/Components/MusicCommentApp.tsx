@@ -14,12 +14,24 @@ const Container = styled.div`
     display: grid;
 
     font-family: Pretendard;
+    @media (max-width: 480px) {
+        width: 100%;
+        height: fit-content;
+        padding: 10px 20px;
+    }
 `;
 
 const TopBar = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
+    @media (max-width: 480px) {
+        display: grid;
+        grid-template-columns: none;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-items: center;
+    }
 `;
 
 const Title = styled.h1`
@@ -128,6 +140,9 @@ const Comments = styled.textarea`
     font-size: 18px;
     line-height: 22px;
     font-family: Pretendard;
+    @media (max-width: 480px){
+        font-size: 16px;
+    }
 `;
 
 const Delete = styled.div`
@@ -244,26 +259,30 @@ export default function MusicCommentApp() {
     return (
         <Container>
             <TopBar>
-                <Title> 피드백 기록지 </Title>
-                <Buttons>
-                    <SystemButton onClick={handleSave}>저장하기</SystemButton>
-                    <div>
-                        <LoadLabel
-                            style={{
-                                backgroundColor: "blue",
-                                userSelect: "none",
-                            }}
-                        >
-                            불러오기
-                            <input
-                                type="file"
-                                accept=".fn"
-                                onChange={handleLoad}
-                                style={{ display: "none" }}
-                            />
-                        </LoadLabel>
-                    </div>
-                </Buttons>
+                <div>
+                    <Title> 피드백 기록지 </Title>
+                </div>
+                <div>
+                    <Buttons>
+                        <SystemButton onClick={handleSave}>저장하기</SystemButton>
+                        <div>
+                            <LoadLabel
+                                style={{
+                                    backgroundColor: "blue",
+                                    userSelect: "none",
+                                }}
+                            >
+                                불러오기
+                                <input
+                                    type="file"
+                                    accept=".fn"
+                                    onChange={handleLoad}
+                                    style={{ display: "none" }}
+                                />
+                            </LoadLabel>
+                        </div>
+                    </Buttons>
+                </div>
             </TopBar>
             <input
                 type="file"

@@ -26,6 +26,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
+
+  @media (max-width: 480px) {
+    width: 95%;
+    height: fit-content;
+
+  }
 `
 
 function App(){
