@@ -34,16 +34,38 @@ const Container = styled.div`
     }
 `;
 
+const PanelBox = styled.div`
+    border-radius: 0 15px 15px 0;
+    background: linear-gradient(to top, #0000003c 85%, #ffffff00 20%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+        @media (max-width: 480px) {
+        width: 95%;
+        height: fit-content;
+    }
+`;
+
 function App() {
     return (
         <>
             <Global styles={GlobalStyles} />
             <Wrapper>
                 <Container style={{ width: "20vw" }}></Container>
-                <Container>
-                    <MusicCommentApp />
+                <Container
+                    style={{
+                        background:
+                            "linear-gradient(to bottom, #451aa9 10%, #ffffff46 30%)",
+                    }}
+                >
+                    <PanelBox>
+                        <MusicCommentApp />
+                    </PanelBox>
                 </Container>
-                <Container style={{width:"25vw"}}>
+                <Container style={{ width: "25vw" }}>
                     <Playlist />
                 </Container>
             </Wrapper>

@@ -24,6 +24,7 @@ const TopBar = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
+
     @media (max-width: 480px) {
         display: grid;
         grid-template-columns: none;
@@ -117,6 +118,8 @@ const Time = styled.div`
     font-size: 1rem;
 `;
 
+const TitleContainer = styled.div``;
+
 const CommentTop = styled.div`
     padding: 10px 5px;
     box-sizing: border-box;
@@ -129,20 +132,20 @@ const CommentTop = styled.div`
 `;
 
 const CommentContainer = styled.div`
-    overflow-Y: scroll;
+    overflow-y: scroll;
     height: fit-content;
     max-height: 60vh;
     padding-right: 10px;
 
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
         width: 8px;
         background: transparent;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
         background: #ffffff25;
         border-radius: 20px;
     }
-`
+`;
 
 const Comments = styled.textarea`
     padding: 10px 5px;
@@ -155,6 +158,7 @@ const Comments = styled.textarea`
     outline: none;
     overflow: hidden;
     min-height: 2rem;
+    height: 2rem;
     width: 100%;
     background-color: transparent;
     color: white;
@@ -275,103 +279,109 @@ export default function MusicCommentApp() {
     }, [comments]);
 
     return (
-        <Container>
-            <TopBar>
-                <div>
-                    <Title> 피드백 기록지 </Title>
-                </div>
-                <div>
-                    <Buttons>
-                        <SystemButton onClick={handleSave}>
-                            저장하기
-                        </SystemButton>
-                        <div>
-                            <LoadLabel
-                                style={{
-                                    backgroundColor: "blue",
-                                    userSelect: "none",
-                                }}
-                            >
-                                불러오기
-                                <input
-                                    type="file"
-                                    accept=".fn"
-                                    onChange={handleLoad}
-                                    style={{ display: "none" }}
-                                />
-                            </LoadLabel>
-                        </div>
-                    </Buttons>
-                </div>
-            </TopBar>
+        <>
+            <Container>
+                <TopBar>
+                    <TitleContainer>
+                        <Title> 피드백 기록지 </Title>
+                    </TitleContainer>
+                    <div>
+                        <Buttons>
+                            <SystemButton onClick={handleSave}>
+                                저장하기
+                            </SystemButton>
+                            <div>
+                                <LoadLabel
+                                    style={{
+                                        backgroundColor: "blue",
+                                        userSelect: "none",
+                                    }}
+                                >
+                                    불러오기
+                                    <input
+                                        type="file"
+                                        accept=".fn"
+                                        onChange={handleLoad}
+                                        style={{ display: "none" }}
+                                    />
+                                </LoadLabel>
+                            </div>
+                        </Buttons>
+                    </div>
+                </TopBar>
 
-            {!audioSrc && ( //오디오 소스 없으면 input 있으면 플레이어 랜더링
-                <input
-                    type="file"
-                    accept=".mp3, .wav, .acc, .flac"
-                    onChange={handleFileChange}
-                    ref={fileInputRef}
-                    style={{ padding: "10px 10px" }}
-                />
-            )}
-
-            {audioSrc && (
-                <>
-                    <audio
-                        ref={audioRef}
-                        src={audioSrc}
-                        style={{
-                            width: "100%",
-                            marginTop: "1rem",
-                            marginBottom: "1rem",
-                        }}
+                {!audioSrc && ( //오디오 소스 없으면 input 있으면 플레이어 랜더링
+                    <input
+                        type="file"
+                        accept=".mp3, .wav, .acc, .flac"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                        style={{ padding: "10px 10px" }}
                     />
-                    <MusicPlayer audioRef={audioRef} />
-                </>
-            )}
+                )}
 
-            <CommentList>
-                <CommentShell
-                    style={{
-                        fontSize: "1.2rem",
-                    }}
-                >
-                    <CommentTop style={{ justifySelf: "left" }}>
-                        코멘트
-                    </CommentTop>
-                    <Time>
-                        <IoMdTime size="1.2rem" />
-                    </Time>
-                    <div style={{ width: "20px" }}></div>
-                </CommentShell>
-                <CommentContainer >
-                    {comments.map((c, i) => (
-                        <CommentShell key={i}>
-                            <Comments
-                                placeholder="코멘트를 입력해주세요"
-                                onChange={(e) =>
-                                    updateComment(i, e.target.value)
-                                }
-                                value={c.text}
-                            >
-                                {c.text}
-                            </Comments>
-                            <Time onClick={() => handleTimeClick(c.time)}>
-                                [{formatTime(c.time)}]
-                            </Time>
-                            <Delete onClick={() => deleteComment(i)}>X</Delete>
-                        </CommentShell>
-                    ))}
-                </CommentContainer>
-                <Button
-                    onClick={() =>
-                        addComment(audioRef.current?.currentTime ?? 0)
-                    }
-                    style={{ marginTop: "5px" }}
-                >
-                    + 코멘트 추가
-                </Button>
-            </CommentList>
-        </Container>
+                {audioSrc && (
+                    <>
+                        <audio
+                            key={audioSrc}
+                            ref={audioRef}
+                            src={audioSrc}
+                            style={{
+                                width: "100%",
+                                marginTop: "1rem",
+                                marginBottom: "1rem",
+                            }}
+                        />
+                    </>
+                )}
+
+                <CommentList>
+                    <CommentShell
+                        style={{
+                            fontSize: "1.2rem",
+                        }}
+                    >
+                        <CommentTop style={{ justifySelf: "left" }}>
+                            코멘트
+                        </CommentTop>
+                        <Time>
+                            <IoMdTime size="1.2rem" />
+                        </Time>
+                        <div style={{ width: "40px" }}></div>
+                    </CommentShell>
+                    <CommentContainer>
+                        {comments.map((c, i) => (
+                            <CommentShell key={i}>
+                                <Comments
+                                    placeholder="코멘트를 입력해주세요"
+                                    onChange={(e) =>
+                                        updateComment(i, e.target.value)
+                                    }
+                                    value={c.text}
+                                >
+                                    {c.text}
+                                </Comments>
+                                <Time onClick={() => handleTimeClick(c.time)}>
+                                    [{formatTime(c.time)}]
+                                </Time>
+                                <Delete onClick={() => deleteComment(i)}>
+                                    X
+                                </Delete>
+                            </CommentShell>
+                        ))}
+                    </CommentContainer>
+                    <Button
+                        onClick={() =>
+                            addComment(audioRef.current?.currentTime ?? 0)
+                        }
+                        style={{ marginTop: "5px" }}
+                    >
+                        + 코멘트 추가
+                    </Button>
+                </CommentList>
+            </Container>
+
+            <MusicPlayer audioRef={audioRef} key={audioSrc} />
+        </>
     );
 }
