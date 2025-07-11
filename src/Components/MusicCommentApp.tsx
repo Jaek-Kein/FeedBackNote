@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 
 interface Comment {
@@ -84,7 +84,7 @@ const CommentList = styled.div`
 
 const CommentShell = styled.div`
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     width: 100%;
     border-radius: 20px 20px 0 0;
     box-sizing: border-box;
@@ -128,6 +128,21 @@ const Comments = styled.textarea`
     font-size: 18px;
     line-height: 22px;
     font-family: Pretendard;
+`;
+
+const Delete = styled.div`
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 10px;
+    color: #f07c7c;
+    font-weight: bold;
+    cursor: pointer;
+    
+    &:hover{
+        color: red;
+    }
 `;
 
 const Buttons = styled.div`
@@ -180,7 +195,7 @@ export default function MusicCommentApp() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "music_comments.FeedbackNote";
+            a.download = "music_comments.fn";
             a.click();
             URL.revokeObjectURL(url);
         };
@@ -206,6 +221,26 @@ export default function MusicCommentApp() {
         }
     };
 
+    const formatTime = (timeInSeconds: number) : string => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = Math.floor(timeInSeconds % 60);
+        return `${minutes}분 ${seconds.toString().padStart(2, '0')} 초`;
+    };
+
+    const handleDelete = (index: number) => {
+        setComments(prev => prev.filter((_, i) => i !== index));
+    }
+
+    useEffect(() => {
+    // 댓글이 변경될 때마다 실행
+    const textareas = document.querySelectorAll("textarea");
+
+    textareas.forEach((el) => {
+        el.style.height = "auto"; // 초기화
+        el.style.height = el.scrollHeight + "px"; // 내용 기반 높이 설정
+    });
+
+}, [comments]);
     return (
         <Container>
             <TopBar>
@@ -222,7 +257,7 @@ export default function MusicCommentApp() {
                             불러오기
                             <input
                                 type="file"
-                                accept=".FeedbackNote"
+                                accept=".fn"
                                 onChange={handleLoad}
                                 style={{ display: "none" }}
                             />
@@ -261,18 +296,12 @@ export default function MusicCommentApp() {
                 {comments.map((c, i) => (
                     <CommentShell key={i}>
                         <Time onClick={() => handleTimeClick(c.time)}>
-                            [{c.time.toFixed(1)}초]
+                            [{formatTime(c.time)}]
                         </Time>
                         <Comments
                             placeholder="코멘트를 입력해주세요"
                             onChange={(e) => {
                                 const el = e.target;
-
-                                // 높이 초기화 후 scrollHeight만큼 재설정
-                                if (el.scrollHeight > el.clientHeight) {
-                                    el.style.height = `${el.scrollHeight}px`;
-                                }
-
                                 // 상태 반영
                                 const newComments = [...comments];
                                 newComments[i] = {
@@ -285,6 +314,7 @@ export default function MusicCommentApp() {
                         >
                             {c.text}
                         </Comments>
+                        <Delete onClick={() => handleDelete(i)}>X</Delete>
                     </CommentShell>
                 ))}
                 <Button
