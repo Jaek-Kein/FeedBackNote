@@ -9,7 +9,6 @@ const Wrapper = styled.div`
 const Title = styled.h2`
     color: white;
 `;
-const Container = styled.div``;
 
 const MusicWrapper = styled.div`
     display: grid;
@@ -73,7 +72,7 @@ export default function Playlist({ audioRef }: Props) {
             <ul style={{ marginTop: "20px" }}>
                 {playlist.map((track, index) => (
                     <MusicWrapper onClick={() => PlaylistClickHandler(track.time)}>
-                        <MusicIndex>{index}</MusicIndex>
+                        <MusicIndex>{index + 1}</MusicIndex>
                         <MusicInfo key={index}>
                             <MusicTitle>{track.title}</MusicTitle>
                             <MusicAuthor>{track.performer}</MusicAuthor>

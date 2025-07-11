@@ -56,8 +56,14 @@ function App() {
         <>
             <Global styles={GlobalStyles} />
             <Wrapper>
-                <Container style={{ width: "20vw" }}>
-                    <PanelBox style={{ background: "#0000003c" }}></PanelBox>
+                <Container
+                    style={{
+                        background:
+                            "linear-gradient(to bottom, #451aa9 20%, #ffffff20 35%)",
+                        width: "20vw",
+                    }}
+                >
+                    <PanelBox></PanelBox>
                 </Container>
                 <Container
                     style={{
@@ -69,9 +75,15 @@ function App() {
                         <MusicCommentApp audioRef={audioRef} />
                     </PanelBox>
                 </Container>
-                <Container style={{ width: "25vw" }}>
-                    <PanelBox style={{ background: "#0000003c" }}>
-                        <Playlist audioRef={audioRef}/>
+                <Container
+                    style={{
+                        background:
+                            "linear-gradient(to bottom, #451aa9 20%, #ffffff20 35%)",
+                        width: "25vw",
+                    }}
+                >
+                    <PanelBox>
+                        <Playlist audioRef={audioRef} />
                     </PanelBox>
                 </Container>
             </Wrapper>
