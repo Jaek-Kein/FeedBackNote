@@ -362,7 +362,7 @@ export default function MusicCommentApp() {
                                     {c.text}
                                 </Comments>
                                 <Time onClick={() => handleTimeClick(c.time)}>
-                                    [{formatTime(c.time)}]
+                                    {formatTime(c.time)}
                                 </Time>
                                 <Delete onClick={() => deleteComment(i)}>
                                     X

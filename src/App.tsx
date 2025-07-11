@@ -25,7 +25,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffffff46;
+    background-color: #ffffff20;
     height: 90%;
 
     @media (max-width: 480px) {
@@ -43,7 +43,7 @@ const PanelBox = styled.div`
     justify-content: center;
     align-items: center;
 
-        @media (max-width: 480px) {
+    @media (max-width: 480px) {
         width: 95%;
         height: fit-content;
     }
@@ -54,11 +54,13 @@ function App() {
         <>
             <Global styles={GlobalStyles} />
             <Wrapper>
-                <Container style={{ width: "20vw" }}></Container>
+                <Container style={{ width: "20vw" }}>
+                    <PanelBox style={{ background: "#0000003c" }}></PanelBox>
+                </Container>
                 <Container
                     style={{
                         background:
-                            "linear-gradient(to bottom, #451aa9 10%, #ffffff46 30%)",
+                            "linear-gradient(to bottom, #451aa9 20%, #ffffff20 35%)",
                     }}
                 >
                     <PanelBox>
@@ -66,7 +68,9 @@ function App() {
                     </PanelBox>
                 </Container>
                 <Container style={{ width: "25vw" }}>
-                    <Playlist />
+                    <PanelBox style={{ background: "#0000003c" }}>
+                        <Playlist />
+                    </PanelBox>
                 </Container>
             </Wrapper>
         </>
