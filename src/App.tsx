@@ -3,6 +3,7 @@ import MusicCommentApp from "./Components/MusicCommentApp";
 import { GlobalStyles } from "./Style/Style";
 import { Global } from "@emotion/react";
 import Playlist from "./Components/PlayList";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -50,6 +51,7 @@ const PanelBox = styled.div`
 `;
 
 function App() {
+    const audioRef = useRef<HTMLAudioElement>(null);
     return (
         <>
             <Global styles={GlobalStyles} />
@@ -64,12 +66,12 @@ function App() {
                     }}
                 >
                     <PanelBox>
-                        <MusicCommentApp />
+                        <MusicCommentApp audioRef={audioRef} />
                     </PanelBox>
                 </Container>
                 <Container style={{ width: "25vw" }}>
                     <PanelBox style={{ background: "#0000003c" }}>
-                        <Playlist />
+                        <Playlist audioRef={audioRef}/>
                     </PanelBox>
                 </Container>
             </Wrapper>

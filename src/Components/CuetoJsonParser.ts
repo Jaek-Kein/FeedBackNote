@@ -1,12 +1,27 @@
 function CuetoJsonParser(cueText: string) {
     const lines = cueText.split("\n");
-    const result: { title: string; performer: string }[] = [];
+    const result: { title: string; performer: string; time: number }[] = [];
 
     let currentTitle = "";
     let currentPerformer = "";
+    let currentTime: number | null = null;
 
     for (let line of lines) {
         line = line.trim();
+
+        if (line.startsWith("TRACK")) {
+            if (currentTitle && currentPerformer && currentTime !== null) {
+                result.push({
+                    title: currentTitle,
+                    performer: currentPerformer,
+                    time: currentTime,
+                });
+            }
+
+            currentTitle = "";
+            currentPerformer = "";
+            currentTime = null;
+        }
 
         if (
             line.startsWith("TITLE") &&
@@ -22,26 +37,21 @@ function CuetoJsonParser(cueText: string) {
                 .replace(/^"|"$/g, "");
         }
 
-        if (line.startsWith("TRACK")) {
-            // TRACK 시작 시 이전 데이터를 저장 (처음엔 무시됨)
-            if (currentTitle && currentPerformer) {
-                result.push({
-                    title: currentTitle,
-                    performer: currentPerformer,
-                });
-            }
+if (line.startsWith("INDEX 01")) {
+    const timeStr = line.replace(/^INDEX 01\s+/, "").trim(); // HH:MM:SS
+    const [hh, mm, ss] = timeStr.split(":").map(Number);
 
-            // TRACK 안에서는 TITLE, PERFORMER 초기화
-            currentTitle = "";
-            currentPerformer = "";
-        }
+    const seconds = hh * 3600 + mm * 60 + ss;
+    currentTime = seconds;
+}
     }
 
     // 마지막 트랙 추가
-    if (currentTitle && currentPerformer) {
+    if (currentTitle && currentPerformer && currentTime !== null) {
         result.push({
             title: currentTitle,
             performer: currentPerformer,
+            time: currentTime,
         });
     }
 

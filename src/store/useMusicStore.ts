@@ -9,6 +9,7 @@ interface Comment {
 interface Track {
     title: string;
     performer: string;
+    time: number;
 }
 
 interface AudioState {

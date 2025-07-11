@@ -196,8 +196,11 @@ const Buttons = styled.div`
     text-justify: center;
 `;
 
-export default function MusicCommentApp() {
-    const audioRef = useRef<HTMLAudioElement>(null);
+interface Props {
+    audioRef: React.RefObject<HTMLAudioElement | null>;
+}
+
+export default function MusicCommentApp({ audioRef }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const {

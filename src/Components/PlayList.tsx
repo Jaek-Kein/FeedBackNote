@@ -1,34 +1,86 @@
 /** @jsxImportSource @emotion/react */
-import { useMusicStore } from '../store/useMusicStore';
-import CuetoJsonParser from './CuetoJsonParser';
+import styled from "@emotion/styled";
+import { useMusicStore } from "../store/useMusicStore";
+import CuetoJsonParser from "./CuetoJsonParser";
 
-export default function Playlist() {
-    const {playlist, setPlaylist} = useMusicStore();
+const Wrapper = styled.div`
+    padding: 30px 50px;
+`;
+const Title = styled.h2`
+    color: white;
+`;
+const Container = styled.div``;
 
-  const handleCueUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+const MusicWrapper = styled.div`
+    display: grid;
+    grid-template-columns: auto 1fr;
+    color: white;
+    gap: 20px;
+    box-sizing: border-box;;
+    border-bottom: 2px solid #ffffff42 ;
+    margin-bottom: 2.5px;
+    padding-bottom: 2.5px;
+`;
+const MusicIndex = styled.div`
+    width: 3em;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 20px;
+`;
+const MusicInfo = styled.div`
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 5px;
+`;
+const MusicTitle = styled.div`
+font-size: 18px;
+`;
+const MusicAuthor = styled.div`
+font-size: 14px;
+`;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const cueText = reader.result as string;
-      const parsedTracks = CuetoJsonParser(cueText);
-      setPlaylist(parsedTracks);
+interface Props {
+    audioRef: React.RefObject<HTMLAudioElement | null>
+}
+
+export default function Playlist({ audioRef }: Props) {
+    const { playlist, setPlaylist } = useMusicStore();
+
+    const handleCueUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const cueText = reader.result as string;
+            const parsedTracks = CuetoJsonParser(cueText);
+            setPlaylist(parsedTracks);
+        };
+        reader.readAsText(file, "utf-8");
     };
-    reader.readAsText(file, "utf-8");
-  };
-  return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h2>CUE 파일 업로드</h2>
-      <input type="file" accept=".cue" onChange={handleCueUpload} />
 
-      <ul style={{ marginTop: "20px" }}>
-        {playlist.map((track, index) => (
-          <li key={index}>
-            🎵 <strong>{track.title}</strong> — {track.performer}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    const PlaylistClickHandler = (time: number) => {
+        if(!audioRef.current) return;
+        audioRef.current.currentTime = time
+    } 
+
+    return (
+        <Wrapper>
+            <Title>CUE 파일 업로드</Title>
+            <input type="file" accept=".cue" onChange={handleCueUpload} />
+
+            <ul style={{ marginTop: "20px" }}>
+                {playlist.map((track, index) => (
+                    <MusicWrapper onClick={() => PlaylistClickHandler(track.time)}>
+                        <MusicIndex>{index}</MusicIndex>
+                        <MusicInfo key={index}>
+                            <MusicTitle>{track.title}</MusicTitle>
+                            <MusicAuthor>{track.performer}</MusicAuthor>
+                        </MusicInfo>
+                    </MusicWrapper>
+                ))}
+            </ul>
+        </Wrapper>
+    );
 }
