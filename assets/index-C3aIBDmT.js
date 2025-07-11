@@ -341,6 +341,7 @@ font-size: 14px;
     flex-direction: column;
     align-items: start;
     overflow-y: scroll;
+    overflow-x: hidden;
     box-sizing: border-box;
     height: 650px;
     transform: translateY(10px);
@@ -367,6 +368,9 @@ font-size: 14px;
     border: none;
     margin-bottom: 5px;
     border-bottom: 1px solid gray;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
 `;function mv(){const{sessions:i,currentIndex:s,switchSession:o}=ar();return Me(ov,{children:[_t(dv,{children:"세션 목록"}),_t(hv,{children:i.map((f,y)=>_t(yv,{onClick:()=>o(y),selected:y===s,children:f.name},y))})]})}const vv=ut.div`
     width: 100vw;
     height: 100vh;
