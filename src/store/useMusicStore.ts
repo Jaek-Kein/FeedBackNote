@@ -2,61 +2,87 @@
 import { create } from "zustand";
 
 interface Comment {
-    time: number;
-    text: string;
+  time: number;
+  text: string;
 }
 
 interface Track {
-    title: string;
-    performer: string;
-    time: number;
+  title: string;
+  performer: string;
+  time: number;
 }
 
-interface AudioState {
-    audioSrc: string | null;
-    audioFile: File | null;
-    comments: Comment[];
-    playlist: Track[];
-
-    setAudio: (src: string, file: File) => void;
-    setComments: (comments: Comment[]) => void;
-    setPlaylist: (playlist: Track[]) => void;
-    updateComment: (index: number, text: string) => void;
-    deleteComment: (index: number) => void;
-    addComment: (time: number) => void;
-
-    reset: () => void;
+interface Session {
+  name: string; // 파일명 등 표시용
+  audioSrc: string;
+  comments: Comment[];
+  playlist: Track[];
 }
 
-export const useMusicStore = create<AudioState>((set) => ({
-    audioSrc: null,
-    audioFile: null,
-    comments: [],
-    playlist: [],
+interface MusicStore {
+  sessions: Session[];           // 여러 개의 세션 저장
+  currentIndex: number | null;   // 현재 선택된 세션 인덱스
 
-    setAudio: (src, file) => set({ audioSrc: src, audioFile: file }),
-    setComments: (comments) => set({ comments }),
-    updateComment: (index, text) =>
-        set((state) => {
-            const newComments = [...state.comments];
-            if (newComments[index]) newComments[index].text = text;
-            return { comments: newComments };
-        }),
-    deleteComment: (index) =>
-        set((state) => ({
-            comments: state.comments.filter((_, i) => i !== index),
-        })),
-    addComment: (time) =>
-        set((state) => ({
-            comments: [...state.comments, { time, text: "" }],
-        })),
+  addSession: (session: Session) => void;
+  switchSession: (index: number) => void;
 
-    setPlaylist: (playlist) => set({ playlist }),
+  audioSrc: string | null;
+  comments: Comment[];
+  playlist: Track[];
 
-    reset: () => ({
-        audioSrc: null,
-        audioFile: null,
-        comments: [],
-        playlist: [],
+  updateComment: (index: number, text: string) => void;
+  deleteComment: (index: number) => void;
+  addComment: (time: number) => void;
+  setPlaylist: (playlist: Track[]) => void;
+}
+
+export const useMusicStore = create<MusicStore>((set, get) => ({
+  sessions: [],
+  currentIndex: null,
+
+  audioSrc: null,
+  comments: [],
+  playlist: [],
+
+  addSession: (session) =>
+    set((state) => {
+      const newSessions = [...state.sessions, session];
+      return {
+        sessions: newSessions,
+        currentIndex: newSessions.length - 1, // 마지막 세션 자동 선택
+        audioSrc: session.audioSrc,
+        comments: session.comments,
+        playlist: session.playlist,
+      };
     }),
+
+  switchSession: (index) => {
+    const target = get().sessions[index];
+    if (!target) return;
+    set({
+      currentIndex: index,
+      audioSrc: target.audioSrc,
+      comments: target.comments,
+      playlist: target.playlist,
+    });
+  },
+
+  updateComment: (index, text) =>
+    set((state) => {
+      const updated = [...state.comments];
+      updated[index].text = text;
+      return { comments: updated };
+    }),
+
+  deleteComment: (index) =>
+    set((state) => ({
+      comments: state.comments.filter((_, i) => i !== index),
+    })),
+
+  addComment: (time) =>
+    set((state) => ({
+      comments: [...state.comments, { time, text: "" }],
+    })),
+
+  setPlaylist: (playlist) => set({ playlist }),
 }));

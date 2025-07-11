@@ -5,6 +5,7 @@ import CuetoJsonParser from "./CuetoJsonParser";
 
 const Wrapper = styled.div`
     padding: 30px 50px;
+    width: 100%;
 `;
 const Title = styled.h2`
     color: white;

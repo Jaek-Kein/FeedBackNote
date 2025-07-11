@@ -4,6 +4,7 @@ import { GlobalStyles } from "./Style/Style";
 import { Global } from "@emotion/react";
 import Playlist from "./Components/PlayList";
 import { useRef } from "react";
+import SessionList from "./Components/SessionList";
 
 const Wrapper = styled.div`
     width: 100vw;
@@ -24,6 +25,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
     border-radius: 15px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #ffffff20;
@@ -43,6 +45,7 @@ const PanelBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     @media (max-width: 480px) {
         width: 95%;
@@ -63,7 +66,9 @@ function App() {
                         width: "20vw",
                     }}
                 >
-                    <PanelBox></PanelBox>
+                    <PanelBox>
+                        <SessionList />
+                    </PanelBox>
                 </Container>
                 <Container
                     style={{
