@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import MusicPlayer from "./musicPlayer";
+import { formatTime } from "./Common";
 
 interface Comment {
     time: number;
@@ -236,12 +238,6 @@ export default function MusicCommentApp() {
         }
     };
 
-    const formatTime = (timeInSeconds: number) : string => {
-        const minutes = Math.floor(timeInSeconds / 60);
-        const seconds = Math.floor(timeInSeconds % 60);
-        return `${minutes}분 ${seconds.toString().padStart(2, '0')} 초`;
-    };
-
     const handleDelete = (index: number) => {
         setComments(prev => prev.filter((_, i) => i !== index));
     }
@@ -284,6 +280,7 @@ export default function MusicCommentApp() {
                     </Buttons>
                 </div>
             </TopBar>
+            {!audioSrc &&(  //오디오 소스 없으면 input 있으면 플레이어 랜더링
             <input
                 type="file"
                 accept="audio/*"
@@ -291,14 +288,16 @@ export default function MusicCommentApp() {
                 ref={fileInputRef}
                 style={{ padding: "10px 10px" }}
             />
-
+            )}
             {audioSrc && (
                 <audio
                     ref={audioRef}
                     src={audioSrc}
-                    controls
                     style={{ width: "100%", marginTop: "1rem", marginBottom:"1rem" }}
                 />
+            )}
+            {audioSrc && (
+                <MusicPlayer audioRef={audioRef}/>
             )}
 
             <CommentList>
