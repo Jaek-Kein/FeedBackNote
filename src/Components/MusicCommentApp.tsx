@@ -283,7 +283,7 @@ export default function MusicCommentApp() {
             {!audioSrc &&(  //오디오 소스 없으면 input 있으면 플레이어 랜더링
             <input
                 type="file"
-                accept="audio/*"
+                accept=".mp3, .wav, .acc, .flac"
                 onChange={handleFileChange}
                 ref={fileInputRef}
                 style={{ padding: "10px 10px" }}
