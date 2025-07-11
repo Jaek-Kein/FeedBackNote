@@ -19,6 +19,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: start;
     overflow-y: scroll;
+    overflow-x: hidden;
     box-sizing: border-box;
     height: 650px;
     transform: translateY(10px);
@@ -48,6 +49,9 @@ const SessionButton = styled.button<{ selected: boolean }>`
     border: none;
     margin-bottom: 5px;
     border-bottom: 1px solid gray;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
 `;
 export default function SessionList() {
     const { sessions, currentIndex, switchSession } = useMusicStore();
