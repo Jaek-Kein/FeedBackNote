@@ -205,7 +205,6 @@ export default function MusicCommentApp({ audioRef }: Props) {
 
     const {
         audioSrc,
-        audioFile,
         comments,
         playlist,
         setAudio,
@@ -228,27 +227,24 @@ export default function MusicCommentApp({ audioRef }: Props) {
     };
 
     const handleSave = () => {
-        if (!audioFile) return;
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            const saveData = {
-                audio: reader.result,
-                comments,
-                playlist: playlist,
-            };
-            const blob = new Blob([JSON.stringify(saveData)], {
-                type: "application/json",
-            });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "music_comments.fn";
-            a.click();
-            URL.revokeObjectURL(url);
-        };
-        reader.readAsDataURL(audioFile);
+        if (!audioSrc) return;
+    const saveData = {
+        audio: audioSrc, // ✅ 항상 base64 형식이 저장됨
+        comments,
+        playlist,
     };
+
+    const blob = new Blob([JSON.stringify(saveData)], {
+        type: "application/json",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "music_comments.fn";
+    a.click();
+    URL.revokeObjectURL(url);
+};
 
     const handleLoad = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
