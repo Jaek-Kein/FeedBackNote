@@ -326,7 +326,7 @@ Error generating stack: `+l.message+`
 font-size: 18px;
 `,rv=ut.div`
 font-size: 14px;
-`;function sv({audioRef:i}){const{playlist:s,setPlaylist:o}=ar(),f=b=>{const A=b.target.files?.[0];if(!A)return;const N=new FileReader;N.onload=()=>{const _=N.result,g=lv(_);o(g)},N.readAsText(A,"utf-8")},y=b=>{i.current&&(i.current.currentTime=b)};return Me(av,{children:[_t(uv,{children:"CUE 파일 업로드"}),_t("input",{type:"file",accept:".cue",onChange:f}),_t("ul",{style:{marginTop:"20px"},children:s.map((b,A)=>Me(nv,{onClick:()=>y(b.time),children:[_t(iv,{children:A+1}),Me(cv,{children:[_t(fv,{children:b.title}),_t(rv,{children:b.performer})]},A)]}))})]})}const ov=ut.div`
+`;function sv({audioRef:i}){const{playlist:s,setPlaylist:o}=ar(),f=b=>{const A=b.target.files?.[0];if(!A)return;const N=new FileReader;N.onload=()=>{const _=N.result,g=lv(_);o(g)},N.readAsText(A,"utf-8")},y=b=>{i.current&&(i.current.currentTime=b)};return Me(av,{children:[_t(uv,{children:"플레이리스트"}),_t("input",{type:"file",accept:".cue",onChange:f}),_t("ul",{style:{marginTop:"20px"},children:s.map((b,A)=>Me(nv,{onClick:()=>y(b.time),children:[_t(iv,{children:A+1}),Me(cv,{children:[_t(fv,{children:b.title}),_t(rv,{children:b.performer})]},A)]}))})]})}const ov=ut.div`
     display: grid;
     grid-template-rows: auto 1fr;
     width: 100%;
@@ -371,7 +371,7 @@ font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
-`;function mv(){const{sessions:i,currentIndex:s,switchSession:o}=ar();return Me(ov,{children:[_t(dv,{children:"세션 목록"}),_t(hv,{children:i.map((f,y)=>_t(yv,{onClick:()=>o(y),selected:y===s,children:f.name},y))})]})}const vv=ut.div`
+`;function mv(){const{sessions:i,currentIndex:s,switchSession:o}=ar();return Me(ov,{children:[_t(dv,{children:"열어본 파일"}),_t(hv,{children:i.map((f,y)=>_t(yv,{onClick:()=>o(y),selected:y===s,children:f.name},y))})]})}const vv=ut.div`
     width: 100vw;
     height: 100vh;
     max-height: 100vh;
