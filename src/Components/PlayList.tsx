@@ -67,7 +67,7 @@ export default function Playlist({ audioRef }: Props) {
 
     return (
         <Wrapper>
-            <Title>CUE 파일 업로드</Title>
+            <Title>플레이리스트</Title>
             <input type="file" accept=".cue" onChange={handleCueUpload} />
 
             <ul style={{ marginTop: "20px" }}>

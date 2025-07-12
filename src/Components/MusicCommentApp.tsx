@@ -232,7 +232,7 @@ export default function MusicCommentApp({ audioRef }: Props) {
     <>
       <Container>
         <TopBar>
-          <Title>피드백 기록지</Title>
+          <Title>FeedBackNote</Title>
           <Buttons>
             <SystemButton onClick={handleSave}>저장하기</SystemButton>
             <LoadLabel>

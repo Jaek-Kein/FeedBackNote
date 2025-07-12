@@ -58,7 +58,7 @@ export default function SessionList() {
 
     return (
         <Wrapper>
-            <Title>세션 목록</Title>
+            <Title>열어본 파일</Title>
             <Container>
                 {sessions.map((session, i) => (
                     <SessionButton
