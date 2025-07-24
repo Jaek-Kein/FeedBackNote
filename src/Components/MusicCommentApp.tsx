@@ -161,9 +161,10 @@ export default function MusicCommentApp({ audioRef }: Props) {
     } = useMusicStore();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const MAX_SIZE = 1 * 1024 * 1024 * 1024;
         const file = e.target.files?.[0];
         if (!file) return;
-
+        if (file.size > MAX_SIZE) return;
         const reader = new FileReader();
         reader.onload = () => {
             addSession({
@@ -291,6 +292,7 @@ export default function MusicCommentApp({ audioRef }: Props) {
                                         updateComment(i, e.target.value)
                                     }
                                     value={c.text}
+                                    maxLength={1000}
                                 />
                                 <Time onClick={() => handleTimeClick(c.time)}>
                                     {formatTime(c.time)}
