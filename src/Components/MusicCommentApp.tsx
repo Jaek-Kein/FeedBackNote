@@ -6,6 +6,12 @@ import { formatTime } from "./Common";
 import { useMusicStore } from "../store/useMusicStore";
 import { IoMdTime } from "react-icons/io";
 import Toast from "./Toast";
+import {
+  AddCommentButton,
+  FnLoadButton,
+  MusicLoadButton,
+  SaveButton,
+} from "./Buttons";
 
 const Container = styled.div`
   width: 1000px;
@@ -30,49 +36,25 @@ const TopBar = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.div`
   font-size: 2rem;
   font-weight: bold;
   color: white;
 `;
 
-const Button = styled.button`
-  padding: 0.4rem 0.8rem;
-  background-color: #007bff;
+const FileTitle = styled.textarea`
+  padding: 10px 5px;
+  background-color: transparent;
   color: white;
+  width: 200%;
+  max-height: 2.5rem;
+  font-size: 18px;
+  word-wrap: break-word;
+  overflow: hidden;
+  resize: none;
   border: none;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const SystemButton = styled(Button)`
-  background-color: #28a745;
-  height: 40px;
-  padding: 0rem 1rem;
-  font-weight: 600;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  &:hover {
-    background-color: #1e7e34;
-  }
-`;
-
-const LoadLabel = styled.label`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0rem 1rem;
-  height: 40px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
+  outline: none;
+  font-family: Pretendard;
 `;
 
 const CommentList = styled.div`
@@ -87,6 +69,7 @@ const CommentShell = styled.div`
   grid-template-columns: 1fr auto auto;
   gap: 20px;
   align-items: center;
+  border-bottom: 1px solid #d3d3d328;
 `;
 
 const Time = styled.div`
@@ -158,12 +141,15 @@ export default function MusicCommentApp({ audioRef }: Props) {
     playlist,
     updateComment,
     deleteComment,
-    addComment,
     addSession,
   } = useMusicStore();
+  const sessionName = useMusicStore((state) =>
+    state.currentIndex !== null ? state.sessions[state.currentIndex]?.name : ""
+  );
+  const updateSessionName = useMusicStore((state) => state.updateSessionName);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const MAX_SIZE = 1 * 1024 * 1024;
+    const MAX_SIZE = 1 * 1024 * 1024 * 1024;
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_SIZE) {
@@ -193,7 +179,8 @@ export default function MusicCommentApp({ audioRef }: Props) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "music_comments.fn";
+    const cleanFileName = sessionName.replace(/\.[^/.]+$/, "");
+    a.download = (cleanFileName || "music_comments") + ".fn";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -239,43 +226,26 @@ export default function MusicCommentApp({ audioRef }: Props) {
     <>
       <Container>
         <TopBar>
-          <Title>FeedBackNote</Title>
+          <div>
+            <Title>FeedBackNote</Title>
+            <FileTitle
+              placeholder="파일명을 입력해주세요"
+              maxLength={25}
+              value={sessionName}
+              onChange={(e) => updateSessionName(e.target.value)}
+            />
+          </div>
           <Buttons>
-            <LoadLabel style={{ backgroundColor: "red" }}>
-              음악 추가
-              <input
-                type="file"
-                accept=".mp3, .wav, .acc, .flac"
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                style={{ display: "none" }}
-              />
-            </LoadLabel>
-            <SystemButton onClick={handleSave}>저장하기</SystemButton>
-            <LoadLabel>
-              불러오기
-              <input
-                type="file"
-                accept=".fn"
-                onChange={handleLoad}
-                style={{ display: "none" }}
-              />
-            </LoadLabel>
+            <MusicLoadButton
+              handleFileChange={handleFileChange}
+              fileInputRef={fileInputRef}
+            />
+            <SaveButton handleSave={handleSave} />
+            <FnLoadButton handleFnLoad={handleLoad} />
           </Buttons>
         </TopBar>
 
-        {audioSrc && (
-          <audio
-            key={audioSrc}
-            ref={audioRef}
-            src={audioSrc}
-            style={{
-              width: "100%",
-              marginTop: "1rem",
-              marginBottom: "1rem",
-            }}
-          />
-        )}
+        {audioSrc && <audio key={audioSrc} ref={audioRef} src={audioSrc} />}
 
         <CommentList>
           <CommentShell style={{ fontSize: "1.2rem" }}>
@@ -301,12 +271,7 @@ export default function MusicCommentApp({ audioRef }: Props) {
               </CommentShell>
             ))}
           </CommentContainer>
-          <Button
-            onClick={() => addComment(audioRef.current?.currentTime ?? 0)}
-            style={{ marginTop: "5px" }}
-          >
-            + 코멘트 추가
-          </Button>
+          <AddCommentButton audioRef={audioRef} />
         </CommentList>
       </Container>
 

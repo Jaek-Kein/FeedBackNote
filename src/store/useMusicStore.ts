@@ -34,6 +34,8 @@ interface MusicStore {
   deleteComment: (index: number) => void;
   addComment: (time: number) => void;
   setPlaylist: (playlist: Track[]) => void;
+  updateSessionName: (name: string) => void;
+  getSessionName: () => string;
 }
 
 export const useMusicStore = create<MusicStore>((set, get) => ({
@@ -85,4 +87,26 @@ export const useMusicStore = create<MusicStore>((set, get) => ({
     })),
 
   setPlaylist: (playlist) => set({ playlist }),
+
+  updateSessionName: (name: string) =>
+  set((state) => {
+    const { currentIndex, sessions } = state;
+    if (currentIndex === null) return {};
+
+    const updatedSessions = [...sessions];
+    updatedSessions[currentIndex] = {
+      ...updatedSessions[currentIndex],
+      name,
+    };
+
+    return {
+      sessions: updatedSessions,
+    };
+  }),
+
+  getSessionName: () => {
+  const { currentIndex, sessions } = get();
+  if (currentIndex === null) return "";
+  return sessions[currentIndex]?.name || "";
+},
 }));
